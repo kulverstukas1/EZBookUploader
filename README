@@ -1,0 +1,1 @@
+Automatic ebook (pdf) uploader. Converts first 10 pages of the PDF into text and extracts the ISBN, by which it then extracts more info from worldcat.org, uploads the file to EZ and generates BBCode.
