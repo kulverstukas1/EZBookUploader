@@ -108,15 +108,15 @@ wikiCode = ""
 for filename in os.listdir("."):
     if (os.path.isfile(filename) and filename.endswith(".pdf")):
         print "Processing '%s'..." % filename
-        goodFilename = sanitizeFilename(filename)
-        os.rename(filename, goodFilename)
-        print "Uploading as '%s'...\n" % goodFilename
-        upUrl = ezup.fileupload(goodFilename)
         text = convertPdf(filename)
         isbns = re.findall('(?:[0-9]{3}-)?[0-9]{1,5}-[0-9]{1,7}-[0-9]{1,6}-[0-9]', text)
         if (len(isbns) > 0):
+            goodFilename = sanitizeFilename(filename)
+            os.rename(filename, goodFilename)
             print "Found ISBN: %s, extracting info..." % isbns[0]
             info = extractInfo(isbns[0]) #; print info; print "\n"; exit()
+            print "Uploading as '%s'...\n" % goodFilename
+            upUrl = ezup.fileupload(goodFilename)
             try:
                 os.rename(goodFilename, "Uploaded/"+goodFilename)
             except:
@@ -138,7 +138,6 @@ for filename in os.listdir("."):
             else:
                 wikiCode += generateWikiCode(upUrl, filename)+"\n"
         else:
-            with open("NO-ISBN.txt", "a") as bbOut: bbOut.write(upUrl+"\n")
             try:
                 os.rename(filename, "No_ISBN/"+filename)
             except:
